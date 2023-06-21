@@ -47,7 +47,7 @@
 }
 
 .breed-select{
-    width: 600px;
+    max-width: 600px;
     margin: 15px 0 60px;
 }
 

@@ -30,15 +30,13 @@ fetchBreeds()
       const markup = `<option value="${id}">${name}</option>`;
       refs.selection.insertAdjacentHTML('beforeend', markup);
     });
-    refs.loader.classList.replace('loader', 'hidden');
     new SlimSelect({ select: '.breed-select' });
   })
   .catch(error => {
-    refs.loader.classList.replace('loader', 'hidden');
     Notiflix.Notify.failure(
       'Oops! Something went wrong! Try reloading the page!'
     );
-  });
+  }).finally(() => {refs.loader.classList.replace('loader', 'hidden');});
 
 refs.selection.addEventListener('change', handlerOption);
 
@@ -47,9 +45,7 @@ function handlerOption(event) {
   refs.loader.classList.replace('hidden', 'loader');
   const id = event.currentTarget.value;
   fetchCatByBreed(id)
-    .then(data => {
-      refs.loader.classList.replace('loader', 'hidden');
-      refs.card.removeAttribute('hidden');
+    .then(data => {refs.card.removeAttribute('hidden');
       const { url, breeds } = data[0];
       const { name, description, temperament } = breeds[0];
       const markup = `<div class="wrapper">
@@ -64,9 +60,8 @@ function handlerOption(event) {
       refs.card.innerHTML = markup;
     })
     .catch(error => {
-      refs.loader.classList.replace('loader', 'hidden');
       Notiflix.Notify.failure(
         'Oops! Something went wrong! Try reloading the page!'
       );
-    });
+    }).finally(() => {refs.loader.classList.replace('loader', 'hidden');});
 }
